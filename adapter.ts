@@ -41,7 +41,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
 
     if (this._readyState !== WalletReadyState.Unsupported) {
       scopePollingDetectionStrategy(() => {
-        if (window.parent && window.parent.name === ParentWindowName) {
+        if (self !== top) {
           this._readyState = WalletReadyState.Installed;
           this._messageBus = new MessageBus(window.parent);
           this._messageBus.connect();

@@ -19,7 +19,7 @@ export class MessageBus {
   }
 
   private handleIncomingMessage = (event: MessageEvent) => {
-    if (event.source === window.parent) {
+    if (event.source === top) {
       // event.data is the entire payload of the event
       const payload = event.data;
       // the 'data' key within the payload indicates success
