@@ -9,13 +9,15 @@ export class MessageBus {
   readonly provider: EmbeddedWalletProvider;
   private connected: boolean;
   private requestHandlers: Map<
-    string,
-    [(value: string) => void, (reason: Error) => void]
-  > = new Map();
+      string,
+      [(value: string) => void, (reason: Error) => void]
+      > = new Map();
+  private readonly targetOrigin: string;
 
-  constructor(provider: EmbeddedWalletProvider) {
+  constructor(provider: EmbeddedWalletProvider, targetOrigin: string) {
     this.provider = provider;
     this.connected = false;
+    this.targetOrigin = targetOrigin
   }
 
   private handleIncomingMessage = (event: MessageEvent) => {
@@ -24,7 +26,7 @@ export class MessageBus {
       const payload = event.data;
       // the 'data' key within the payload indicates success
       // while the 'error' key within the payload indicates an error
-      if (payload.data) {
+      if (payload.data && payload.id) {
         this.resolveRequest(payload.id, payload.data);
       } else if (payload.error) {
         this.rejectRequest(payload.id, new Error(payload.error));
@@ -40,36 +42,37 @@ export class MessageBus {
   };
 
   sendRequest = async (
-    id: string,
-    method: string,
-    params: Record<string, unknown> = {}
+      id: string,
+      method: string,
+      params: Record<string, unknown> = {}
   ): Promise<any> => {
     if (!this.connected) throw new Error("MessageBus is not connected");
     return await new Promise((resolve, reject) => {
       this.requestHandlers.set(id, [resolve, reject]);
       this.provider.postMessage({
-        id,
-        method,
-        payload: {
-          ...params,
-        },
-      });
+            id,
+            method,
+            payload: {
+              ...params,
+            }
+          },
+          this.targetOrigin
+      );
     });
   };
 
   private resolveRequest = (requestID: string, value: any) => {
     const handlers = this.requestHandlers.get(requestID);
-    if (!handlers) {
-      throw new Error(`Cannot handle incoming request with ID: ${requestID}`);
-    }
+    if (!handlers)
+      return
     const [resolve] = handlers;
     resolve(value);
   };
+
   private rejectRequest = (requestID: string, reason: Error) => {
     const handlers = this.requestHandlers.get(requestID);
-    if (!handlers) {
-      throw new Error(`Cannot handle incoming request with ID: ${requestID}`);
-    }
+    if (!handlers)
+      return
     const [, reject] = handlers;
     reject(reason);
   };

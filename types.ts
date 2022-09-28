@@ -5,5 +5,5 @@ export interface WalletMessage {
 }
 
 export interface EmbeddedWalletProvider {
-  postMessage: (message: WalletMessage) => void;
+  postMessage: (message: WalletMessage, targetOrigin: string) => void;
 }
