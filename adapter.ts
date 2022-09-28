@@ -105,6 +105,53 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
         this.emit("disconnect");
     }
 
+    async signTransaction(tx: Transaction): Promise<Transaction> {
+        if (!this.connected) throw new WalletNotConnectedError();
+        if (!this._messageBus) throw new WalletNotReadyError();
+
+        return await this._messageBus.sendRequest(
+            `proposeTransaction#${Date.now()}`,
+            "proposeTransaction",
+            {
+                instructions: tx.instructions.map((instr) => ({
+                    keys: instr.keys.map((key) => ({
+                        pubkey: key.pubkey.toString(),
+                        isSigner: key.isSigner,
+                        isWritable: key.isWritable,
+                    })),
+                    data: instr.data.toJSON(),
+                    programId: instr.programId.toString(),
+                })),
+            }
+        );
+    }
+
+    async signAllTransactions(txs: Transaction[]): Promise<Transaction[]> {
+        if (!this.connected) throw new WalletNotConnectedError();
+        if (!this._messageBus) throw new WalletNotReadyError();
+
+        const instructions: any[] = []
+        txs.forEach((tx) => tx.instructions.forEach((instr) => {
+            instructions.push({
+                keys: instr.keys.map((key) => ({
+                    pubkey: key.pubkey.toString(),
+                    isSigner: key.isSigner,
+                    isWritable: key.isWritable,
+                })),
+                data: instr.data.toJSON(),
+                programId: instr.programId.toString(),
+            })
+        }))
+
+        return await this._messageBus.sendRequest(
+            `proposeTransaction#${Date.now()}`,
+            "proposeTransaction",
+            {
+                instructions: instructions
+            }
+        );
+    }
+
     async sendTransaction(
         transaction: Transaction,
         _connection: Connection,
