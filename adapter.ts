@@ -152,6 +152,53 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
         );
     }
 
+    async sendAll(txWithSigners: { tx: Transaction, signers?: [] | undefined }[], _opts?: any): Promise<string[]> {
+        if (!this.connected) throw new WalletNotConnectedError();
+        if (!this._messageBus) throw new WalletNotReadyError();
+
+        const instructions: any[] = []
+        txWithSigners.forEach((tx) => tx.tx.instructions.forEach((instr) => {
+            instructions.push({
+                keys: instr.keys.map((key) => ({
+                    pubkey: key.pubkey.toString(),
+                    isSigner: key.isSigner,
+                    isWritable: key.isWritable,
+                })),
+                data: instr.data.toJSON(),
+                programId: instr.programId.toString(),
+            })
+        }))
+
+        return await this._messageBus.sendRequest(
+            `proposeTransaction#${Date.now()}`,
+            "proposeTransaction",
+            {
+                instructions: instructions
+            }
+        );
+    }
+
+    async sendAndConfirm(tx: Transaction, _signers?: [] | undefined, _opts?: any): Promise<string> {
+        if (!this.connected) throw new WalletNotConnectedError();
+        if (!this._messageBus) throw new WalletNotReadyError();
+
+        return await this._messageBus.sendRequest(
+            `proposeTransaction#${Date.now()}`,
+            "proposeTransaction",
+            {
+                instructions: tx.instructions.map((instr) => ({
+                    keys: instr.keys.map((key) => ({
+                        pubkey: key.pubkey.toString(),
+                        isSigner: key.isSigner,
+                        isWritable: key.isWritable,
+                    })),
+                    data: instr.data.toJSON(),
+                    programId: instr.programId.toString(),
+                })),
+            }
+        );
+    }
+
     async sendTransaction(
         transaction: Transaction,
         _connection: Connection,

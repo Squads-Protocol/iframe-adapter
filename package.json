@@ -1,6 +1,6 @@
 {
   "name": "@sqds/iframe-adapter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Wallet adapter for interacting with Squads via iframe message passing",
   "main": "lib/index.js",
   "scripts": {
