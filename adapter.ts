@@ -122,6 +122,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
                     data: instr.data.toJSON(),
                     programId: instr.programId.toString(),
                 })),
+                type: "string"
             }
         );
     }
@@ -147,7 +148,8 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
             `proposeTransaction#${Date.now()}`,
             "proposeTransaction",
             {
-                instructions: instructions
+                instructions: instructions,
+                type: "array"
             }
         );
     }
@@ -173,7 +175,8 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
             `proposeTransaction#${Date.now()}`,
             "proposeTransaction",
             {
-                instructions: instructions
+                instructions: instructions,
+                type: "array"
             }
         );
     }
@@ -195,6 +198,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
                     data: instr.data.toJSON(),
                     programId: instr.programId.toString(),
                 })),
+                type: "string"
             }
         );
     }
@@ -220,6 +224,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
                     data: instr.data.toJSON(),
                     programId: instr.programId.toString(),
                 })),
+                type: "string"
             }
         );
     }
