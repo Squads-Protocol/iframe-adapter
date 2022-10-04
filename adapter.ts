@@ -15,7 +15,7 @@ import {
 import {SendTransactionOptions} from "@solana/wallet-adapter-base/src/adapter";
 import {MessageBus} from "./messageBus";
 
-export const EmbeddedWalletName = "SquadsEmbeddedWallet" as WalletName;
+export const EmbeddedWalletName = "Squads Multisig" as WalletName;
 export const ParentWindowName = "squads-custom-app";
 
 export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
