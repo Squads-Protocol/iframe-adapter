@@ -93,6 +93,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
             this._publicKey = new PublicKey(vaultInfo[0].pubkey);
             this.emit("connect", this._publicKey);
         } catch (error: any) {
+            console.log(error)
             this.emit("error", error);
             throw error;
         } finally {
