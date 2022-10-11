@@ -66,7 +66,7 @@ export class MessageBus {
     if (!handlers)
       return
     const [resolve] = handlers;
-    resolve(value);
+    resolve(value.txSignature);
   };
 
   private rejectRequest = (requestID: string, reason: Error) => {
