@@ -29,3 +29,13 @@ or\
     <WalletProvider wallets={wallets} autoConnect>
    // etc
    ```
+
+### Testing the setup
+Head over to `https://v3.squads.so/apps/test/{yourSquadId}` replacing the `{yourSquadId}` with the address of your Squad (NOT your vault). You can similarly go to your
+Squad multisig and simply change the URL to match the pattern mentioned here.
+You'll be asked to enter the URL of your app and a title, after which you can test to see that your app is properly configured to use Squads.\
+1. You should be able to connect the SquadsEmbeddedWallet from the wallet selection in your app.
+2. The address displayed by your App should match your vault address
+
+### Adding your App to Squads
+After you've validated that your App is ready to be integrated with Squads, send us a message on Telegram or Discord for final testing and implementation.
