@@ -17,7 +17,7 @@ or\
 2. Add the proper CSP header:\
 `Content-Security-Policy: frame-ancestors https://v3.squads.so;`
 
-3. Add the following code where your wallet adapter context is initialized
+3. Add the following code where your wallet adapter context is initialized:
    ```
    import {detectEmbeddedInSquadsIframe, SquadsEmbeddedWalletAdapter} from @sqds/iframe-adapter
    ...

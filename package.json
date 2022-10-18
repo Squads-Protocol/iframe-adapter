@@ -3,6 +3,10 @@
   "version": "1.0.12",
   "description": "Wallet adapter for interacting with Squads via iframe message passing",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Squads-Protocol/iframe-adapter.git"
+  },
   "scripts": {
     "build": "tsc -d --sourceMap"
   },
