@@ -4,6 +4,7 @@ export const detectEmbeddedInSquadsIframe = (): boolean => {
   return (
     typeof window !== "undefined" &&
     window.parent !== window &&
-    self !== top
+    self !== top &&
+    window?.location?.ancestorOrigins[0]?.includes("squads")
   );
 };
