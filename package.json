@@ -1,6 +1,6 @@
 {
   "name": "@sqds/iframe-adapter",
-  "version": "1.0.14",
+  "version": "1.0.16",
   "description": "Wallet adapter for interacting with Squads via iframe message passing",
   "main": "lib/index.js",
   "repository": {
@@ -14,14 +14,14 @@
     "lib"
   ],
   "dependencies": {
-    "@solana/wallet-adapter-base": "^0.9.18",
-    "@solana/web3.js": "^1.66.2",
+    "@solana/wallet-adapter-base": "^0.9.21",
+    "@solana/web3.js": "^1.73.2",
     "bs58": "^5.0.0",
     "encoding": "^0.1.13"
   },
   "devDependencies": {
-    "@types/node": "18.6.4",
-    "prettier": "^2.7.1",
-    "typescript": "4.7.4"
+    "@types/node": "18.14.0",
+    "prettier": "^2.8.4",
+    "typescript": "4.9.5"
   }
 }
