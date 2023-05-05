@@ -19,7 +19,7 @@ or\
 
 3. Add the following code where your wallet adapter context is initialized:
    ```
-   import {detectEmbeddedInSquadsIframe, SquadsEmbeddedWalletAdapter} from @sqds/iframe-adapter
+   import {detectEmbeddedInSquadsIframe, SquadsEmbeddedWalletAdapter} from "@sqds/iframe-adapter"
    ...
    // then add the following conditional (or similar) where your supported wallets are loaded
 
