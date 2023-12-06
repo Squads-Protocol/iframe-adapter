@@ -66,6 +66,10 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
         return this._readyState;
     }
 
+    async autoConnect(): Promise<void> {
+        return super.autoConnect();
+    }
+
     async connect(): Promise<void> {
         console.log("wallet connect called");
         try {
