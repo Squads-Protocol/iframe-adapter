@@ -6,14 +6,9 @@ import {
     WalletNotReadyError,
     WalletReadyState,
 } from "@solana/wallet-adapter-base";
-import {
-    Connection,
-    PublicKey,
-    Transaction,
-    TransactionSignature,
-} from "@solana/web3.js";
-import {SendTransactionOptions} from "@solana/wallet-adapter-base/src/adapter";
-import {MessageBus} from "./messageBus";
+import { Connection, PublicKey, Transaction, TransactionSignature } from "@solana/web3.js";
+import { SendTransactionOptions } from "@solana/wallet-adapter-base/src/adapter";
+import { MessageBus } from "./messageBus";
 
 export const EmbeddedWalletName = "Squads Multisig" as WalletName;
 export const ParentWindowName = "squads-custom-app";
@@ -39,7 +34,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
         this._connecting = false;
         this._publicKey = null;
         this._messageBus = null;
-        this._targetOrigin = targetOrigin
+        this._targetOrigin = targetOrigin;
 
         if (this._readyState !== WalletReadyState.Unsupported) {
             scopePollingDetectionStrategy(() => {
@@ -71,6 +66,10 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
         return this._readyState;
     }
 
+    async autoConnect(): Promise<void> {
+        return super.autoConnect();
+    }
+
     async connect(): Promise<void> {
         console.log("wallet connect called");
         try {
@@ -93,7 +92,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
             this._publicKey = new PublicKey(vaultInfo[0].pubkey);
             this.emit("connect", this._publicKey);
         } catch (error: any) {
-            console.log(error)
+            console.log(error);
             this.emit("error", error);
             throw error;
         } finally {
@@ -123,7 +122,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
                     data: instr.data.toJSON(),
                     programId: instr.programId.toString(),
                 })),
-                type: "string"
+                type: "string",
             }
         );
     }
@@ -132,52 +131,59 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
         if (!this.connected) throw new WalletNotConnectedError();
         if (!this._messageBus) throw new WalletNotReadyError();
 
-        const instructions: any[] = []
-        txs.forEach((tx) => tx.instructions.forEach((instr) => {
-            instructions.push({
-                keys: instr.keys.map((key) => ({
-                    pubkey: key.pubkey.toString(),
-                    isSigner: key.isSigner,
-                    isWritable: key.isWritable,
-                })),
-                data: instr.data.toJSON(),
-                programId: instr.programId.toString(),
+        const instructions: any[] = [];
+        txs.forEach((tx) =>
+            tx.instructions.forEach((instr) => {
+                instructions.push({
+                    keys: instr.keys.map((key) => ({
+                        pubkey: key.pubkey.toString(),
+                        isSigner: key.isSigner,
+                        isWritable: key.isWritable,
+                    })),
+                    data: instr.data.toJSON(),
+                    programId: instr.programId.toString(),
+                });
             })
-        }))
+        );
 
         return await this._messageBus.sendRequest(
             `proposeTransaction#${Date.now()}`,
             "proposeTransaction",
             {
                 instructions: instructions,
-                type: "array"
+                type: "array",
             }
         );
     }
 
-    async sendAll(txWithSigners: { tx: Transaction, signers?: [] | undefined }[], _opts?: any): Promise<string[]> {
+    async sendAll(
+        txWithSigners: { tx: Transaction; signers?: [] | undefined }[],
+        _opts?: any
+    ): Promise<string[]> {
         if (!this.connected) throw new WalletNotConnectedError();
         if (!this._messageBus) throw new WalletNotReadyError();
 
-        const instructions: any[] = []
-        txWithSigners.forEach((tx) => tx.tx.instructions.forEach((instr) => {
-            instructions.push({
-                keys: instr.keys.map((key) => ({
-                    pubkey: key.pubkey.toString(),
-                    isSigner: key.isSigner,
-                    isWritable: key.isWritable,
-                })),
-                data: instr.data.toJSON(),
-                programId: instr.programId.toString(),
+        const instructions: any[] = [];
+        txWithSigners.forEach((tx) =>
+            tx.tx.instructions.forEach((instr) => {
+                instructions.push({
+                    keys: instr.keys.map((key) => ({
+                        pubkey: key.pubkey.toString(),
+                        isSigner: key.isSigner,
+                        isWritable: key.isWritable,
+                    })),
+                    data: instr.data.toJSON(),
+                    programId: instr.programId.toString(),
+                });
             })
-        }))
+        );
 
         return await this._messageBus.sendRequest(
             `proposeTransaction#${Date.now()}`,
             "proposeTransaction",
             {
                 instructions: instructions,
-                type: "array"
+                type: "array",
             }
         );
     }
@@ -199,7 +205,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
                     data: instr.data.toJSON(),
                     programId: instr.programId.toString(),
                 })),
-                type: "string"
+                type: "string",
             }
         );
     }
@@ -225,7 +231,7 @@ export class SquadsEmbeddedWalletAdapter extends BaseWalletAdapter {
                     data: instr.data.toJSON(),
                     programId: instr.programId.toString(),
                 })),
-                type: "string"
+                type: "string",
             }
         );
     }
