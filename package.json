@@ -14,7 +14,7 @@
     "lib"
   ],
   "dependencies": {
-    "@solana/wallet-adapter-base": "^0.9.21",
+    "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/web3.js": "^1.73.2",
     "bs58": "^5.0.0",
     "encoding": "^0.1.13"
